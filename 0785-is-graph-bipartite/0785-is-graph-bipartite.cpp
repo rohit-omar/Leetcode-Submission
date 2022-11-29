@@ -1,29 +1,26 @@
 class Solution {
 public:
-    bool dfs(int node,vector<vector<int>>& gph, vector<int>& vis){
-        for(auto it:gph[node]){
-            if(vis[it]==0){
-                vis[it]=1-vis[node];
-                if(!dfs(it,gph,vis)){
-                    return false;
-                }
-            }else if(vis[it]==vis[node]){
-                return false;
-            }
-        }
-        return true;
-    }
     bool isBipartite(vector<vector<int>>& gph) {
         int n = gph.size();
         vector<int> vis(n,0);
-        vector<int> val(n,0);
+        queue<int> qu;
         for(int i=0;i<n;i++){
-            if(vis[i]==0){
-                vis[i]=0;
-                if(!dfs(i,gph,vis)){
-                    return false;
+            if(vis[i]!=0) continue;
+            vis[i]=1;
+            qu.push(i);
+            while(!qu.empty()){
+                int tp = qu.front();
+                qu.pop();
+                for(auto it:gph[tp]){
+                    if(vis[it]==0){
+                        vis[it]=-vis[tp];
+                        qu.push(it);
+                    }else if(vis[tp]==vis[it]){
+                        return false;
+                    }
                 }
             }
+            
         }
         return true;
     }
