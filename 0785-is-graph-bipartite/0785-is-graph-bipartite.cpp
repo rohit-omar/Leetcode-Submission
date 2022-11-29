@@ -1,13 +1,13 @@
 class Solution {
 public:
     bool isBipartite(vector<vector<int>>& gph) {
-        int n = gph.size();
+        int n= gph.size();
         vector<int> vis(n,0);
         queue<int> qu;
         for(int i=0;i<n;i++){
             if(vis[i]!=0) continue;
-            vis[i]=1;
             qu.push(i);
+            vis[i]=1;
             while(!qu.empty()){
                 int tp = qu.front();
                 qu.pop();
@@ -20,7 +20,6 @@ public:
                     }
                 }
             }
-            
         }
         return true;
     }
