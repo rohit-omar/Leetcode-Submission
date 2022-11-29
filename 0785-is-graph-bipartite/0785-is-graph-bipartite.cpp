@@ -1,18 +1,13 @@
 class Solution {
 public:
-    bool dfs(int node,vector<vector<int>>& gph, vector<int>& vis, vector<int>& val,int v){
-        int t;
-        if(v==1){
-            t=0;
-        }else if(v==0) t=1;
+    bool dfs(int node,vector<vector<int>>& gph, vector<int>& vis){
         for(auto it:gph[node]){
             if(vis[it]==0){
-                vis[it]=1;
-                val[it]=v;
-                if(!dfs(it,gph,vis,val,t)){
+                vis[it]=1-vis[node];
+                if(!dfs(it,gph,vis)){
                     return false;
                 }
-            }else if(val[it]==t){
+            }else if(vis[it]==vis[node]){
                 return false;
             }
         }
@@ -24,7 +19,8 @@ public:
         vector<int> val(n,0);
         for(int i=0;i<n;i++){
             if(vis[i]==0){
-                if(!dfs(i,gph,vis,val,1)){
+                vis[i]=0;
+                if(!dfs(i,gph,vis)){
                     return false;
                 }
             }
