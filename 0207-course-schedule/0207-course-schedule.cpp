@@ -1,34 +1,42 @@
-class Solution {
-public:
-    
-    // OPT IS TAKEN FOR OPTIMIZATION
-    // IT WAS GIVING TLE DUE TO NORMAL OPERATION
-    bool dfs(vector<vector<int>>& adj, int node, vector<int>& vis,vector<int>& opt){
-        vis[node]=1;
-        for(auto it:adj[node]){
-            if(vis[it]==0){
-                vis[it]=1;
-                if(!dfs(adj,it,vis,opt)) return false;
-                else opt[it]=2;
-            }else if(vis[it]==1 && opt[it]!=2){
+class Solution
+{
+    public:
+       	// BFS 
+        bool canFinish(int num, vector<vector < int>> &pr)
+        {
+            int n = pr.size();
+            queue<int> qu;
+            vector<vector < int>> adj(num);
+            for (int i = 0; i < n; i++)
+            {
+                adj[pr[i][0]].push_back(pr[i][1]);
+            }
+            vector<int> vis(num), ind(num);
+            for (int i = 0; i < num; i++)
+            {
+                for (auto it: adj[i]) ind[it]++;
+            }
+            for (int i = 0; i < num; i++)
+            {
+                if (ind[i] == 0) qu.push(i);
+            }
+            int count = 0;
+            while (!qu.empty())
+            {
+                int tp = qu.front();
+                qu.pop();
+                count++;
+                for (auto it: adj[tp])
+                {
+                    ind[it]--;
+                    if (ind[it] == 0)
+                    {
+                        qu.push(it);
+                    }
+                }
+            }
+            cout << count << " " << num << endl;
+            if (count == num) return true;
             return false;
-            }
         }
-        opt[node]=2;
-        return true;
-    }
-    bool canFinish(int num, vector<vector<int>>& pr) {
-        int n = pr.size();
-        vector<vector<int>> adj(num);
-        for(int i=0;i<n;i++){
-            adj[pr[i][1]].push_back(pr[i][0]);
-        }
-        vector<int> vis(num,0),opt(num,-1);
-        for(int i=0;i<num;i++){
-            if(vis[i]==0){
-                if(!dfs(adj,i,vis,opt)) return false;
-            }
-        }
-        return true;
-    }
 };
